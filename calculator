@@ -1,0 +1,66 @@
+#include<iostream>
+#include<string>
+#include<vector>
+using namespace std;
+int getNumber(string a) {
+	int i = 0;
+	int number = 0;
+	while (true) {
+		if (a[i] == '+' || a[i] == '-' || a[i] == '*' || a[i] == '/' || a[i] == 0) {
+			return number;
+		}
+		else {
+			number *= 10;
+			number += a[i]-48;
+		}
+		i++;
+	}
+}
+int howManyDigits(int a) {
+	int howMany = 0;
+	while (a > 0) {
+		a /= 10;
+		howMany++;
+	}
+	return howMany;
+}
+int main() {
+	string operation;
+	cin >> operation;
+	vector<double>calculator;
+	vector<char>sign;
+	while(operation.length() > 0){
+		calculator.push_back(getNumber(operation));
+		if (howManyDigits(getNumber(operation)) + 1 > operation.length()) {
+			operation.erase(0);
+		}
+		else {
+			operation.erase(0, howManyDigits(getNumber(operation)));
+			sign.push_back(operation[0]);
+			operation.erase(0, 1);
+		}
+	}
+	for (int i = 0; i < sign.size(); i++){
+		if (sign[i] == '*') {
+			calculator[i + 1] *= calculator[i];
+			calculator[i] = 0;
+		}
+		if (sign[i] == '/') {
+			calculator[i + 1] /= calculator[i];
+			calculator[i] = 0;
+		}
+	}
+	int score = 0;
+	for (int i = 0; i < calculator.size(); i++) {
+		score += calculator[i];
+	}
+	cout << score;
+	
+
+
+	
+	
+
+
+	return 0;
+}
